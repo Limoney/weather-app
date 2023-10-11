@@ -17,7 +17,7 @@ class WeatherController extends AbstractController
 
     }
 
-    #[Route('/weather/{id}', name: 'app_weather ')]
+    #[Route('/weather/{id}', name: 'app_weather_by_city_id', requirements: ['id' => '\d+'])]
     public function cityById(Location $location): Response
     {
         $currentMeasurements = $this->weatherService->getCurrentMeasurementsByLocation($location);
@@ -28,7 +28,7 @@ class WeatherController extends AbstractController
         ]);
     }
 
-    #[Route('/weather/{city}', name: 'app_weather')]
+    #[Route('/weather/{city}', name: 'app_weather_by_city_name', requirements: ['city' => '[a-zA-Z]+'])]
     public function cityByName(Location $location): Response
     {
         $currentMeasurements = $this->weatherService->getCurrentMeasurementsByLocation($location);
