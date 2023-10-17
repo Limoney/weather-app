@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Location;
 use App\Service\WeatherService;
+use http\Exception\RuntimeException;
+use PHPUnit\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,10 +19,19 @@ class WeatherController extends AbstractController
 
     }
 
-    #[Route('/weather/{id}', name: 'app_weather_by_city_id', requirements: ['id' => '\d+'])]
-    public function cityById(Location $location): Response
+    #[Route('/weather/{city}/{countryCode}', name: 'app_weather')]
+    public function city($city,$countryCode = null): Response
     {
-        $currentMeasurements = $this->weatherService->getCurrentMeasurementsByLocation($location);
+        try
+        {
+            $location = $this->weatherService->getLocationByCity($city,$countryCode);
+            $currentMeasurements = $this->weatherService->getCurrentMeasurementsByLocation($location);
+        }
+        catch (RuntimeException)
+        {
+            $location = null;
+            $currentMeasurements = [];
+        }
 
         return $this->render('weather/index.html.twig', [
             'location' => $location,
@@ -28,14 +39,14 @@ class WeatherController extends AbstractController
         ]);
     }
 
-    #[Route('/weather/{city}', name: 'app_weather_by_city_name', requirements: ['city' => '[a-zA-Z]+'])]
-    public function cityByName(Location $location): Response
-    {
-        $currentMeasurements = $this->weatherService->getCurrentMeasurementsByLocation($location);
-
-        return $this->render('weather/index.html.twig', [
-            'location' => $location,
-            'currentMeasurements' => $currentMeasurements
-        ]);
-    }
+//    #[Route('/weather/{city}', name: 'app_weather_by_city_name', requirements: ['city' => '[a-zA-Z]+'])]
+//    public function cityByName(Location $location): Response
+//    {
+//        $currentMeasurements = $this->weatherService->getCurrentMeasurementsByLocation($location);
+//
+//        return $this->render('weather/index.html.twig', [
+//            'location' => $location,
+//            'currentMeasurements' => $currentMeasurements
+//        ]);
+//    }
 }

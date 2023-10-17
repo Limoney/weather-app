@@ -27,4 +27,19 @@ class WeatherService
     {
         return $this->measurementRepository->findByLocation($location);
     }
+
+    public function getLocationByCity(string $city, string $countryCode = null): Location
+    {
+        $propsArray = ["city" => $city];
+        if($countryCode)
+        {
+            $propsArray["country"] = $countryCode;
+        }
+
+        $location = $this->locationRepository->findOneBy($propsArray);
+        if ($location === null) {
+            throw new RuntimeException('City not found');
+        }
+        return $location;
+    }
 }
