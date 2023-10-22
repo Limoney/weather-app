@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Entity\Location;
 use App\Repository\LocationRepository;
 use App\Repository\MeasurementRepository;
-use http\Exception\RuntimeException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WeatherService
 {
@@ -18,12 +18,12 @@ class WeatherService
     public function getLocationById(int $locationId): Location {
         $city = $this->locationRepository->findOneBy(['id' => $locationId]);
         if ($city === null) {
-            throw new RuntimeException('City not found');
+            throw new NotFoundHttpException('City not found');
         }
         return $city;
     }
 
-    public function getCurrentMeasurementsByLocation(Location $location)
+    public function getFutureMeasurementsByLocation(Location $location)
     {
         return $this->measurementRepository->findByLocation($location);
     }
@@ -38,7 +38,7 @@ class WeatherService
 
         $location = $this->locationRepository->findOneBy($propsArray);
         if ($location === null) {
-            throw new RuntimeException('City not found');
+            throw new NotFoundHttpException('City not found');
         }
         return $location;
     }

@@ -24,6 +24,10 @@ class Measurement
     #[ORM\Column(type: Types::DECIMAL, precision: 3, scale: '0')]
     private ?string $temperatureCelsius = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?WeatherCondition $weatherCondition = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +65,18 @@ class Measurement
     public function setTemperatureCelsius(string $temperatureCelsius): static
     {
         $this->temperatureCelsius = $temperatureCelsius;
+
+        return $this;
+    }
+
+    public function getWeatherCondition(): ?WeatherCondition
+    {
+        return $this->weatherCondition;
+    }
+
+    public function setWeatherCondition(?WeatherCondition $weatherCondition): static
+    {
+        $this->weatherCondition = $weatherCondition;
 
         return $this;
     }

@@ -10,7 +10,7 @@
 
 <div class="example-wrapper">
     <h1>Weather in {{ location.city }}, {{ location.country }}</h1>
-    {% for measurement in currentMeasurements%}
+    {% for measurement in futureMeasurements%}
         <div>{{ measurement.date | date('d.m.Y') }} {{ measurement.temperatureCelsius }}&deg;C</div>
     {% endfor %}
 </div>
