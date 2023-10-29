@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MeasurementRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MeasurementRepository::class)]
 class Measurement
@@ -22,6 +23,7 @@ class Measurement
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 3, scale: '0')]
+    #[Assert\Range(min: -50, max: 50)]
     private ?string $temperatureCelsius = null;
 
     #[ORM\ManyToOne]

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
 class Location
@@ -17,18 +18,23 @@ class Location
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $city = null;
 
     #[ORM\Column(length: 2)]
+    #[Assert\NotBlank]
+    #[Assert\Length(exactly: 2)]
     private ?string $country = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 7)]
+    #[Assert\Range(min: -90, max: 90)]
     private ?string $latitude = null;
 
     #[ORM\OneToMany(mappedBy: 'location', targetEntity: Measurement::class, orphanRemoval: true)]
     private Collection $measurements;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 7)]
+    #[Assert\Range(min: -180, max: 180)]
     private ?string $longitude = null;
 
     public function __construct()

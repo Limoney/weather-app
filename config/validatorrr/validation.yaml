@@ -1,0 +1,10 @@
+App\Entity\Location:
+    properties:
+        latitude:
+            - Range:
+                min: 120
+                max: 180
+        longitude:
+            - Range:
+                min: 0
+                max: 180
