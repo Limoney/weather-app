@@ -23,23 +23,23 @@ class WeatherService
         return $city;
     }
 
-    public function getFutureMeasurementsByLocation(Location $location)
-    {
-        return $this->measurementRepository->findByLocation($location);
-    }
-
-    public function getLocationByCity(string $city, string $countryCode = null): Location
-    {
-        $propsArray = ["city" => $city];
-        if($countryCode)
-        {
-            $propsArray["country"] = $countryCode;
-        }
-
-        $location = $this->locationRepository->findOneBy($propsArray);
+    public function getLocationByCountryAndCity(string $city, string $countryCode): Location {
+        $location = $this->locationRepository->findOneBy(["city" => $city, 
+                                                          "country" => $countryCode]);
         if ($location === null) {
             throw new NotFoundHttpException('City not found');
         }
         return $location;
+    }
+
+    public function getWeatherForLocation(Location $location): array
+    {
+        return $this->measurementRepository->findByLocation($location);
+    }
+
+    public function getWeatherForCountryAndCity(string $city, string $countryCode): array
+    {
+        $location = $this->getLocationByCountryAndCity($city,$countryCode);
+        return $this->measurementRepository->findByLocation($location);
     }
 }

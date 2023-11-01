@@ -24,7 +24,7 @@ class WeatherController extends AbstractController
                             Location $location
                         ): Response
     {
-        $futureMeasurements = $this->weatherService->getFutureMeasurementsByLocation($location);
+        $futureMeasurements = $this->weatherService->getWeatherForLocation($location);
 
         return $this->render('weather/index.html.twig', [
             'location' => $location,
