@@ -39,6 +39,13 @@
                         <a class="nav-link active" aria-current="page" href="{{path('app_measurement_index')}}">Measurements</a>
                     </li>
                 </ul>
+
+                {% if is_granted('ROLE_USER') %}
+                    <a href="{{ path('app_logout') }}">Logout</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}">Login</a>
+                {% endif %}
+
                 </div>
             </div>
         </nav>
